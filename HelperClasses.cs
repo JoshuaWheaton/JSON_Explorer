@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Xml.Linq;
 
 namespace JSON_Explorer
 {
@@ -10,6 +12,11 @@ namespace JSON_Explorer
         public int? MemRead { get; set; }
         public List<object> RegWrite { get; set; }
         public List<int> MemWrite { get; set; }
+
+        public override string ToString()
+        {
+            return "RegWrite: " + RegWrite + "; MemWrite: " + MemWrite;
+        }
     }
 
     public class Info
@@ -45,5 +52,9 @@ namespace JSON_Explorer
         public List<Instruction> instructions { get; set; }
     }
 
-
+    public class NewRegister
+    {
+        public string name { get; set; }
+        public int value { get; set; }
+    }
 }

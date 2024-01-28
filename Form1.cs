@@ -14,6 +14,8 @@ namespace JSON_Explorer
 {
     public partial class Form1 : Form
     {
+        //A global variable
+        Root deserializedClass = new Root();
         public Form1()
         {
             InitializeComponent();
@@ -33,10 +35,20 @@ namespace JSON_Explorer
                     richTextBox1.Text = reader.ReadToEnd();
 
                     //Get the JSON data and deserialize it into useful classes
-                    Root deserializedClass = JsonConvert.DeserializeObject<Root>(richTextBox1.Text);
+                    deserializedClass = JsonConvert.DeserializeObject<Root>(richTextBox1.Text);
 
                     //Get the registers from the register list and display them
-                    registerViewerDisplay.DataSource = deserializedClass.info.registers;
+                    //Create and a initialize a newRegisters data sctructure
+                    //Has all the registers and sets them to 0
+                    List<NewRegister> newRegisters = new List<NewRegister>();
+                    foreach (Register register in deserializedClass.info.registers)
+                    {
+                        NewRegister tempRegister = new NewRegister();
+                        tempRegister.name = register.name;
+                        tempRegister.value = 0;
+                        newRegisters.Add(tempRegister);
+                    }
+                    registerViewerDisplay.DataSource = newRegisters;
 
                     //Display all the instructions/functions
                     //First go through Instructions list
@@ -78,6 +90,8 @@ namespace JSON_Explorer
         private void nextButton_Click(object sender, EventArgs e)
         {
             functionViewBox.SelectedIndex++;
+            //foreach()
+            label1.Text = deserializedClass.instructions[functionViewBox.SelectedIndex].events[0].ToString();
         }
 
         private void previousButton_Click(object sender, EventArgs e)
